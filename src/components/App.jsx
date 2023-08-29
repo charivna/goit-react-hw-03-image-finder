@@ -1,12 +1,23 @@
 import { Component } from 'react';
+import { Searchbar } from './Searchbar/Searchbar';
+import { ToastContainer } from 'react-toastify';
 
-export class App extends Component() {
-  state = {};
+export class App extends Component {
+  state = {
+    inputValue: '',
+  };
+
+  handleSearchSubmit = inputValue => {
+    this.setState({
+      inputValue,
+    });
+  };
 
   render() {
     return (
       <>
-        <h1>hell00</h1>
+        <Searchbar onSubmit={this.handleSearchSubmit} />
+        <ToastContainer autoClose={3000} />
       </>
     );
   }

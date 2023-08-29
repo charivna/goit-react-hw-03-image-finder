@@ -1,27 +1,49 @@
-// import { Component } from 'react';
+import { Component } from 'react';
+import { toast } from 'react-toastify';
 
-// export class Searchbar extends Component() {
-//   state = {};
+export class Searchbar extends Component {
+  state = {
+    inputValue: '',
+  };
 
-//   render() {
-//     return (
-//       <>
-//         <header class="searchbar">
-//           <form class="form">
-//             <button type="submit" class="button">
-//               <span class="button-label">Search</span>
-//             </button>
+  handleInputChange = ({ currentTarget }) => {
+    this.setState({
+      inputValue: currentTarget.value.toLowerCase(),
+    });
+  };
 
-//             <input
-//               class="input"
-//               type="text"
-//               autocomplete="off"
-//               autofocus
-//               placeholder="Search images and photos"
-//             />
-//           </form>
-//         </header>
-//       </>
-//     );
-//   }
-// }
+  handleSubmit = e => {
+    e.preventDefault();
+    if (this.state.inputValue.trim() === '') {
+      toast('Enter a search term!');
+      return;
+    }
+    this.props.onSubmit(this.state.inputValue);
+    this.setState({
+      inputValue: '',
+    });
+  };
+  render() {
+    return (
+      <>
+        <header className="searchbar">
+          <form className="form" onSubmit={this.handleSubmit}>
+            <button type="submit" className="button">
+              <span className="button-label">Search</span>
+            </button>
+
+            <input
+              className="input"
+              type="text"
+              autoComplete="off"
+              autoFocus
+              placeholder="Search images and photos"
+              value={this.state.inputValue}
+              onChange={this.handleInputChange}
+            />
+          </form>
+        </header>
+      </>
+    );
+  }
+}

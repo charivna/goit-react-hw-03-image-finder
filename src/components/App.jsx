@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { Searchbar } from './Searchbar/Searchbar';
 
 export class App extends Component() {
   state = {};
@@ -7,7 +6,7 @@ export class App extends Component() {
   render() {
     return (
       <>
-        <h1>hell0</h1>
+        <h1>hell00</h1>
       </>
     );
   }

@@ -13,6 +13,7 @@ export class App extends Component {
     images: [],
     page: 1,
     loading: false,
+    error: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -27,7 +28,7 @@ export class App extends Component {
             images: hits,
           })
         )
-        .finally(this.setState({ loading: false }));
+        .finally(() => this.setState({ loading: false }));
     }
   }
   handleSearchSubmit = inputValue => {
@@ -37,11 +38,11 @@ export class App extends Component {
   };
 
   render() {
-    const { images, loading } = this.state;
+    const { images, loading, error } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleSearchSubmit} />
-
+        {error && <p>Ошибка</p>}
         {loading && (
           <ColorRing
             visible={true}

@@ -58,3 +58,11 @@ export const SearchButton = styled.button`
     opacity: 1;
   }
 `;
+
+export const BtnLabel = styled.label`
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+`;

@@ -1,6 +1,13 @@
 import { Component } from 'react';
 import { toast } from 'react-toastify';
-import { Header, Input, SearchButton, SearchForm } from './Serchbar.styled';
+import {
+  BtnLabel,
+  Header,
+  Input,
+  SearchButton,
+  SearchForm,
+} from './Serchbar.styled';
+import { ReactComponent as Icon } from 'icons/search.svg';
 
 export class Searchbar extends Component {
   state = {
@@ -29,7 +36,10 @@ export class Searchbar extends Component {
         <Header className="searchbar">
           <SearchForm className="form" onSubmit={this.handleSubmit}>
             <SearchButton type="submit" className="button">
-              <span className="button-label">Search</span>
+              <BtnLabel className="button-label">
+                {' '}
+                <Icon />
+              </BtnLabel>
             </SearchButton>
 
             <Input

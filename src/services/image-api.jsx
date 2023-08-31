@@ -3,5 +3,10 @@ const BASE_URL = 'https://pixabay.com/api/';
 
 export function fetchImages(inputValue, page) {
   const url = `${BASE_URL}?q=${inputValue}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
-  return fetch(url).then(resp => resp.json());
+  return fetch(url).then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    return Promise.reject(new Error(`Something wrong with ${inputValue}`));
+  });
 }

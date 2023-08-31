@@ -9,11 +9,11 @@ import { Button } from './Button/Button';
 import { ColorRing } from 'react-loader-spinner';
 export class App extends Component {
   state = {
+    error: null,
     inputValue: '',
     images: [],
     page: 1,
     loading: false,
-    error: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -22,18 +22,22 @@ export class App extends Component {
       this.state.inputValue !== prevState.inputValue
     ) {
       this.setState({ loading: true });
+
       fetchImages(this.state.inputValue, this.state.page)
         .then(({ hits }) =>
           this.setState({
             images: hits,
           })
         )
+        .catch(error => this.setState({ error }))
         .finally(() => this.setState({ loading: false }));
     }
   }
   handleSearchSubmit = inputValue => {
     this.setState({
       inputValue,
+      images: [],
+      page: 1,
     });
   };
 
@@ -42,7 +46,7 @@ export class App extends Component {
     return (
       <>
         <Searchbar onSubmit={this.handleSearchSubmit} />
-        {error && <p>Ошибка</p>}
+        {error && <h1>{error.message}</h1>}
         {loading && (
           <ColorRing
             visible={true}
@@ -55,7 +59,7 @@ export class App extends Component {
           />
         )}
 
-        <ImageGallery images={this.state.images} />
+        {this.state.images && <ImageGallery images={this.state.images} />}
         {images.length !== 0 && <Button />}
 
         <ToastContainer autoClose={3000} />

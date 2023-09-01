@@ -6,6 +6,7 @@ import { ImageGallery } from './ImageGallery/ImageGallery';
 import { fetchImages } from 'services/image-api';
 import { Button } from './Button/Button';
 import { Modal } from './Modal/Modal';
+import { toast } from 'react-toastify';
 
 import { ColorRing } from 'react-loader-spinner';
 export class App extends Component {
@@ -23,7 +24,6 @@ export class App extends Component {
   handleLoadMore = () => {
     this.setState(prevState => ({
       page: prevState.page + 1,
-      images: [...prevState.images, ...this.state.images],
     }));
   };
 
@@ -54,11 +54,16 @@ export class App extends Component {
       this.setState({ loading: true });
 
       fetchImages(this.state.inputValue, this.state.page)
-        .then(({ hits }) =>
-          this.setState({
-            images: hits,
-          })
-        )
+        .then(({ hits }) => {
+          if (!hits.length) {
+            toast.error('Такої фігні немає');
+            return;
+          }
+
+          this.setState(prevState => ({
+            images: [...prevState.images, ...hits],
+          }));
+        })
         .catch(error => this.setState({ error: true }))
         .finally(() => this.setState({ loading: false }));
     }

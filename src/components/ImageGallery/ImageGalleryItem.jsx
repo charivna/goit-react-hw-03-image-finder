@@ -1,13 +1,9 @@
 import { GalleryImage, GalleryItem } from './ImageGallery.styled';
 
-export const ImageGalleryItem = ({ images, onClick }) => {
+export const ImageGalleryItem = ({ src, tags, dataSrc, onClick }) => {
   return (
-    <>
-      {images.map(({ id, webformatURL, largeImageURL, tags }) => (
-        <GalleryItem className="gallery-item" key={id} src={webformatURL}>
-          <GalleryImage src={webformatURL} alt={tags} onClick={onClick} />
-        </GalleryItem>
-      ))}
-    </>
+    <GalleryItem onClick={onClick}>
+      <GalleryImage src={src} data-src={dataSrc} alt={tags} />
+    </GalleryItem>
   );
 };

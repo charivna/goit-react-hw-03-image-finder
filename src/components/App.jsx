@@ -56,7 +56,7 @@ export class App extends Component {
       fetchImages(this.state.inputValue, this.state.page)
         .then(({ hits }) => {
           if (!hits.length) {
-            toast.error('Такої фігні немає');
+            toast.error(`No pictures with "${this.state.inputValue}"`);
             return;
           }
 

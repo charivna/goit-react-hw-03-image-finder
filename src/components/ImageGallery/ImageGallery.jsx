@@ -7,7 +7,10 @@ export class ImageGallery extends Component {
     return (
       <>
         <Gallery className="gallery">
-          <ImageGalleryItem images={this.props.images} />
+          <ImageGalleryItem
+            images={this.props.images}
+            onClick={this.props.clickImg}
+          />
         </Gallery>
       </>
     );

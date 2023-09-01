@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { fetchImages } from 'services/image-api';
 import { Button } from './Button/Button';
+import { Modal } from './Modal/Modal';
 
 import { ColorRing } from 'react-loader-spinner';
 export class App extends Component {
@@ -14,6 +15,9 @@ export class App extends Component {
     images: [],
     page: 1,
     loading: false,
+    modalImg: '',
+    modalAlt: '',
+    showModal: false,
   };
 
   handleLoadMore = () => {
@@ -28,6 +32,17 @@ export class App extends Component {
       inputValue,
       images: [],
       page: 1,
+    });
+  };
+
+  handleClickImg = () => {
+    console.log('click');
+    // const imgForModal = event.target.dataset.src;
+    // const altForModal = event.target.alt;
+    this.setState({
+      showModal: true,
+      // modalImg: imgForModal,
+      // modalAlt: altForModal,
     });
   };
 
@@ -50,11 +65,11 @@ export class App extends Component {
   }
 
   render() {
-    const { images, loading, error } = this.state;
+    const { images, loading, error, showModal } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleSearchSubmit} />
-        {error && !loading && <h1>Something wrong!</h1>}
+        {error && !loading && <h1>Something wrong. Reload the page!</h1>}
         {loading && (
           <ColorRing
             visible={true}
@@ -68,10 +83,13 @@ export class App extends Component {
         )}
 
         {this.state.images.length > 0 && (
-          <ImageGallery images={this.state.images} />
+          <ImageGallery
+            images={this.state.images}
+            clickImg={this.handleClickImg}
+          />
         )}
         {images.length !== 0 && <Button onClick={this.handleLoadMore} />}
-
+        {showModal && <Modal>Some</Modal>}
         <ToastContainer autoClose={3000} />
       </>
     );

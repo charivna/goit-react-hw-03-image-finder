@@ -1,5 +1,4 @@
 import { GalleryImage, GalleryItem } from './ImageGallery.styled';
-import { nanoid } from 'nanoid';
 
 export const ImageGalleryItem = ({ images }) => {
   return (

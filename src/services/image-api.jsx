@@ -7,6 +7,5 @@ export function fetchImages(inputValue, page) {
     if (response.ok) {
       return response.json();
     }
-    return Promise.reject(new Error(`Something wrong with ${inputValue}`));
   });
 }

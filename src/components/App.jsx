@@ -9,11 +9,26 @@ import { Button } from './Button/Button';
 import { ColorRing } from 'react-loader-spinner';
 export class App extends Component {
   state = {
-    error: null,
+    error: false,
     inputValue: '',
     images: [],
     page: 1,
     loading: false,
+  };
+
+  handleLoadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+      images: [...prevState.images, ...this.state.images],
+    }));
+  };
+
+  handleSearchSubmit = inputValue => {
+    this.setState({
+      inputValue,
+      images: [],
+      page: 1,
+    });
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -29,24 +44,17 @@ export class App extends Component {
             images: hits,
           })
         )
-        .catch(error => this.setState({ error }))
+        .catch(error => this.setState({ error: true }))
         .finally(() => this.setState({ loading: false }));
     }
   }
-  handleSearchSubmit = inputValue => {
-    this.setState({
-      inputValue,
-      images: [],
-      page: 1,
-    });
-  };
 
   render() {
     const { images, loading, error } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleSearchSubmit} />
-        {error && <h1>{error.message}</h1>}
+        {error && !loading && <h1>Something wrong!</h1>}
         {loading && (
           <ColorRing
             visible={true}
@@ -59,8 +67,10 @@ export class App extends Component {
           />
         )}
 
-        {this.state.images && <ImageGallery images={this.state.images} />}
-        {images.length !== 0 && <Button />}
+        {this.state.images.length > 0 && (
+          <ImageGallery images={this.state.images} />
+        )}
+        {images.length !== 0 && <Button onClick={this.handleLoadMore} />}
 
         <ToastContainer autoClose={3000} />
       </>

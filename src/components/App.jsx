@@ -14,6 +14,7 @@ export class App extends Component {
     error: false,
     inputValue: '',
     images: [],
+    totalImg: null,
     page: 1,
     loading: false,
     modalImg: '',
@@ -35,14 +36,19 @@ export class App extends Component {
     });
   };
 
-  handleClickImg = () => {
-    console.log('click');
-    // const imgForModal = event.target.dataset.src;
-    // const altForModal = event.target.alt;
+  handleClickImg = evt => {
+    const imgForModal = evt.target.dataset.src;
+    const altForModal = evt.target.alt;
     this.setState({
       showModal: true,
-      // modalImg: imgForModal,
-      // modalAlt: altForModal,
+      modalImg: imgForModal,
+      modalAlt: altForModal,
+    });
+  };
+
+  closeModal = () => {
+    this.setState({
+      showModal: false,
     });
   };
 
@@ -54,7 +60,7 @@ export class App extends Component {
       this.setState({ loading: true });
 
       fetchImages(this.state.inputValue, this.state.page)
-        .then(({ hits }) => {
+        .then(({ hits, totalHits }) => {
           if (!hits.length) {
             toast.error(`No pictures with "${this.state.inputValue}"`);
             return;
@@ -62,6 +68,7 @@ export class App extends Component {
 
           this.setState(prevState => ({
             images: [...prevState.images, ...hits],
+            totalImg: totalHits,
           }));
         })
         .catch(error => this.setState({ error: true }))
@@ -70,7 +77,7 @@ export class App extends Component {
   }
 
   render() {
-    const { images, loading, error, showModal } = this.state;
+    const { images, loading, error, showModal, page, totalImg } = this.state;
     return (
       <>
         <Searchbar onSubmit={this.handleSearchSubmit} />
@@ -93,8 +100,18 @@ export class App extends Component {
             clickImg={this.handleClickImg}
           />
         )}
-        {images.length !== 0 && <Button onClick={this.handleLoadMore} />}
-        {showModal && <Modal>Some</Modal>}
+        {images.length !== 0 && page < Math.ceil(totalImg / 12) && (
+          <Button onClick={this.handleLoadMore} />
+        )}
+        {showModal && (
+          <Modal
+            img={this.state.modalImg}
+            alt={this.state.modalAlt}
+            onCloseModal={this.closeModal}
+          >
+            Some
+          </Modal>
+        )}
         <ToastContainer autoClose={3000} />
       </>
     );
